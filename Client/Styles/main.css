@@ -1,0 +1,186 @@
+/* Reset some default styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+/* Header styling */
+header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2rem;
+}
+
+header button {
+    background-color: #ffdc5d;
+    color: #333;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+header button:hover {
+    background-color: #ffbb33;
+}
+
+header .fa-cart-plus {
+    margin-right: 8px;
+}
+
+/* Main content styling */
+main {
+    width: 80%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Product Card styling */
+.product-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.product-card img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.product-card h2 {
+    font-size: 1.25rem;
+    color: #007bff;
+    margin: 10px 0;
+}
+
+.product-card p {
+    margin: 5px 0;
+}
+
+.product-card button {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.product-card button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.product-card span {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+}
+
+/* Checkout form styling */
+.checkout-form {
+    width: 100%;
+    max-width: 500px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-form h2 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.checkout-form p {
+    margin-bottom: 10px;
+}
+
+.checkout-form input[type="text"],
+.checkout-form input[type="number"],
+.checkout-form select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.checkout-form input[type="checkbox"],
+.checkout-form input[type="radio"] {
+    margin-right: 5px;
+}
+
+.checkout-form button {
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.checkout-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Cart Item Count Badge */
+header .cart-count {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    margin-left: 5px;
+}
+
+/* Ratings */
+.rating {
+    font-size: 1.1rem;
+    color: #ffc107;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    main {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .product-card {
+        max-width: 100%;
+    }
+
+    .checkout-form {
+        max-width: 100%;
+    }
+}
