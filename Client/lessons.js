@@ -5,7 +5,7 @@ const lessons = [
         description: "Enhance your math skills!",
         price: 100,
         availableInventory: 5,
-        image: "images/lesson1.jpg",
+        image: "Images/maths.png",
         alt: "Math Lesson"
     },
     {
@@ -14,7 +14,7 @@ const lessons = [
         description: "Hands-on science experience.",
         price: 150,
         availableInventory: 3,
-        image: "images/lesson2.jpg",
+        image: "Images/science.png",
         alt: "Science Workshop"
     }
     // Add more lessons as needed
