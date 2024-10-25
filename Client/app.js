@@ -1,48 +1,63 @@
-let webstore = new Vue({
+new Vue({
     el: '#app',
     data: {
-        sitename: "After School Program",
+        sitename: 'After School App ',
         showLessons: true,
-        lessons: lessons,
-        cart: [],
+        lessons: lessons, // Use the lessons array from lessons.js
         order: {
             firstName: '',
             lastName: '',
             address: ''
+        },
+        cart: [] // Array to hold cart items
+    },
+    computed: {
+        cartItemCount() {
+            return this.cart.reduce((total, item) => total + item.quantity, 0);
+        },
+        sortedLessons() {
+            return this.lessons.sort((a, b) => a.title.localeCompare(b.title));
         }
     },
     methods: {
-        addToCart(lesson) {
-            if (lesson.availableInventory > this.cartCount(lesson.id)) {
-                this.cart.push(lesson.id);
-            }
+        toggleCheckout() {
+            this.showLessons = !this.showLessons;
         },
-        cartCount(id) {
-            return this.cart.filter(itemId => itemId === id).length;
+        addToCart(lesson) {
+            const existingItem = this.cart.find(item => item.id === lesson.id);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                this.cart.push ({ ...lesson, quantity: 1 });
+            }
         },
         canAddToCart(lesson) {
             return lesson.availableInventory > this.cartCount(lesson.id);
         },
-        toggleCheckout() {
-            this.showLessons = !this.showLessons;
-        },
         submitOrder() {
-            if (this.order.firstName && this.order.lastName && this.order.address) {
-                alert("Order submitted successfully!");
-                this.cart = [];
-                this.order = { firstName: '', lastName: '', address: '' };
-                this.showLessons = true;
-            } else {
-                alert("Please complete the form.");
+            // Check if any of the fields are empty
+            if (!this.order.firstName || !this.order.lastName || !this.order.address) {
+                alert("Please fill out all fields before submitting the order.");
+                return; // Exit the method if validation fails
             }
-        }
-    },
-    computed: {
-        cartItemCount() {
-            return this.cart.length || "";
+            
+            // Logic to submit the order
+            console.log('Order submitted:', this.order);
+            
+            // Show an alert with the order details
+            alert(`Order submitted!\nName: ${this.order.firstName} ${this.order.lastName}\nAddress: ${this.order.address}`);
+            
+            // Clear the order fields
+            this.order.firstName = '';
+            this.order.lastName = '';
+            this.order.address = '';
+            
+            // Optionally, toggle back to show lessons
+            this.showLessons = true; // Go back to showing lessons after placing an order
         },
-        sortedLessons() {
-            return this.lessons.sort((a, b) => a.price - b.price);
+        cartCount(lessonId) {
+            const item = this.cart.find(item => item.id === lessonId);
+            return item ? item.quantity : 0;
         }
     }
 });
