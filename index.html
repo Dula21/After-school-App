@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>After School App</title>
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <style>
+        /* Add some basic styling */
+        .lesson {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+        }
+        .lesson img {
+            width: 100px;
+        }
+        .cart {
+            background-color: #f8f8f8;
+            padding: 10px;
+        }
+        .cart-item {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+        .checkout {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <header>
+        <h1 v-text="sitename"></h1>
+        <button @click="viewCheckout">{{ showCheckout ? 'Back to Lessons' : 'View Cart' }} ({{ cart.length }})</button>
+    </header>
+
+    <main v-if="!showCheckout">
+        <div v-for="lesson in lessons" :key="lesson.id" class="lesson">
+            <figure>
+                <img v-bind:src="lesson.image" v-bind:alt="lesson.alt">
+            </figure>
+            <h2 v-text="lesson.title"></h2>
+            <p v-html="lesson.description"></p>
+            <p>Price: {{ lesson.price }} </p>
+            <p>Available: {{ lesson.available }} </p>
+            <button :disabled="lesson.available === 0" @click="addToCart(lesson)">
+                {{ lesson.available === 0 ? 'Sold Out' : 'Add to Cart' }}
+            </button>
+        </div>
+    </main>
+
+    <div v-else class="checkout">
+        <h2>Checkout</h2>
+        <div class="cart-item" v-for="item in cart" :key="item.id">
+            <h3>{{ item.title }} ({{ item.quantity }})</h3>
+            <button @click="removeFromCart(item)">Remove</button>
+        </div>
+        <p>Total Items: {{ totalItemsInCart }}</p>
+        <p>Total Price: {{ totalPrice }}</p>
+        <button @click="checkout">Proceed to Checkout</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var webstore = new Vue({
+        el: '#app',
+        data: {
+            sitename: 'After School App',
+            showCheckout: false,
+            cart: [],
+            lessons: [
+                {
+                    id: 1,
+                    title: "Math Class",
+                    description: "Learn advanced mathematics.",
+                    price: 150,
+                    available: 5,
+                    image: "images/math.png",
+                    alt: "Math Class"
+                },
+                {
+                    id: 2,
+                    title: "Science Class",
+                    description: "Explore the world of science.",
+                    price: 200,
+                    available: 3,
+                    image: "images/science.png",
+                    alt: "Science Class"
+                },
+                {
+                    id: 3,
+                    title: "Art Class",
+                    description: "Unleash your creativity in this fun art class.",
+                    price: 120,
+                    available: 0,
+                    image: "images/art.png",
+                    alt: "Art Class"
+                }
+            ]
+        },
+        methods: {
+            addToCart(lesson) {
+                let cartItem = this.cart.find(item => item.id === lesson.id);
+                if (cartItem) {
+                    cartItem.quantity++;
+                } else {
+                    this.cart.push({ ...lesson, quantity: 1 });
+                }
+                lesson.available--;
+            },
+            removeFromCart(item) {
+                let cartItem = this.cart.find(cart => cart.id === item.id);
+                if (cartItem) {
+                    cartItem.quantity--;
+                    item.available++;
+                    if (cartItem.quantity === 0) {
+                        this.cart = this.cart.filter(cart => cart.id !== item.id);
+                    }
+                }
+            },
+            viewCheckout() {
+                this.showCheckout = !this.showCheckout;
+            },
+            checkout() {
+                alert('Proceeding to Checkout');
+                this.cart = [];
+                this.lessons.forEach(lesson => lesson.available = 5); // Reset inventory for demo purposes
+                this.showCheckout = false;
+            }
+        },
+        computed: {
+            totalItemsInCart() {
+                return this.cart.reduce((total, item) => total + item.quantity, 0);
+            },
+            totalPrice() {
+                return this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
