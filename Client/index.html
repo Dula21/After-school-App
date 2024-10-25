@@ -2,15 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>After School App</title>
-    <!-- Importing Vue.js and Font Awesome for icons -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
-    <!--import lessons-->
-    <script src="lessons.js"></script>
-
-    <!-- Link to the main CSS file -->
     <link rel="stylesheet" href="Styles/main.css">
 </head>
 
@@ -25,21 +20,19 @@
         </header>
 
         <main>
-            <!-- Lesson Listing -->
             <div v-if="showLessons">
-                <div v-for="lesson in sortedLessons" :key="lesson.id">
+                <div v-for="lesson in sortedLessons" :key="lesson.id" class="lesson-card">
                     <figure>
                         <img v-bind:src="lesson.image" :alt="lesson.alt">
                     </figure>
                     <h2>{{ lesson.title }}</h2>
                     <p>{{ lesson.description }}</p>
+                    <p>Location: {{ lesson.location }}</p> <!-- Displaying the location -->
                     <p>Price: ${{ lesson.price }}</p>
                     <p>Available: {{ lesson.availableInventory }}</p>
                     <button v-on:click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">
                         {{ canAddToCart(lesson) ? "Add to Cart" : "Out of Stock" }}
                     </button>
-
-                    <!-- Low Stock Notification -->
                     <span v-if="lesson.availableInventory === cartCount(lesson.id)">All out!</span>
                     <span v-else-if="lesson.availableInventory - cartCount(lesson.id) < 5">
                         Only {{ lesson.availableInventory - cartCount(lesson.id) }} left!
@@ -47,18 +40,19 @@
                 </div>
             </div>
 
-            <!-- Checkout Form -->
             <div v-else>
-                <h2>Checkout</h2>
-                <p><strong>First Name:</strong> <input v-model="order.firstName" /></p>
-                <p><strong>Last Name:</strong> <input v-model="order.lastName" /></p>
-                <p><strong>Address:</strong> <input v-model="order.address" /></p>
-                <button v-on:click="submitOrder">Place Order</button>
+                <div class="checkout-form">
+                    <h2>Checkout</h2>
+                    <p><strong>First Name:</strong> <input v-model="order.firstName" /></p>
+                    <p><strong>Last Name:</strong> <input v-model="order.lastName" /></p>
+                    <p><strong>Address:</strong> <input v-model="order.address" /></p>
+                    <button v-on:click="submitOrder">Place Order</button>
+                </div>
             </div>
         </main>
     </div>
 
-    <!-- Vue.js Script -->
+    <script src="lessons.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
