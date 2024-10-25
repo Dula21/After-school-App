@@ -6,25 +6,28 @@ const lessons = [
         price: 100,
         availableInventory: 5,
         image: "Images/maths.png",
-        alt: "Math Lesson"
+        alt: "Math Lesson",
+        location: "Room 101" // New location property
     },
     {
         id: 2,
         title: "Science Workshop",
-        description: "Hands-on science experience.",
+ description: "Hands-on science experience.",
         price: 150,
         availableInventory: 3,
         image: "Images/science.png",
-        alt: "Science Workshop"
+        alt: "Science Workshop",
+        location: "Lab A" // New location property
     },
     {
         id: 3,
-        title: "Phyiscs Workshop",
+        title: "Place Physics Workshop",
         description: "Hands-on science experience.",
         price: 150,
         availableInventory: 6,
         image: "Images/science.png",
-        alt: "Phyiscs Workshop"
+        alt: "Physics Workshop",
+        location: "Auditorium" // New location property
     }
     // Add more lessons as needed
 ];
