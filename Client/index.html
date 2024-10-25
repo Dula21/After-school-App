@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>After School App</title>
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        .lesson {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            width: calc(33% - 40px);
+            box-sizing: border-box;
+        }
+        .lesson img {
+            width: 100%; /* Responsive image */
+            height: auto; /* Maintain aspect ratio */
+        }
+        h2 i {
+            margin-right: 10px; /* Space between icon and title */
+            color: #007bff; /* Change color of the icon */
+        }
+        .checkout {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1 v-text="sitename"></h1>
+            <button @click="viewCheckout">{{ showCheckout ? 'Back to Lessons' : 'View Cart' }} ({{ cart.length }})</button>
+        </header>
+
+        <div>
+            <input v-model="searchQuery" type="text" placeholder="Search for lessons...">
+            <button @click="sortLessons('price')">Sort by Price</button>
+            <button @click="sortLessons('title')">Sort by Subject</button>
+            <button @click="sortLessons('available')">Sort by Availability</button>
+        </div>
+
+        <main v-if="!showCheckout">
+            <div v-for="lesson in filteredLessons" :key="lesson.id" class="lesson">
+                <figure>
+                    <img v-bind:src="lesson.image" v-bind:alt="lesson.alt">
+                </figure>
+                <h2><i v-bind:class="lesson.icon"></i> {{ lesson.title }}</h2>
+                <p v-html="lesson.description"></p>
+                <p>Price: ${{ lesson.price }} </p>
+                <p>Available: {{ lesson.available }} </p>
+                <button :disabled="lesson.available === 0" @click="addToCart(lesson)">
+                    <i class="fas fa-cart-plus"></i> {{ lesson.available === 0 ? 'Sold Out' : 'Add to Cart' }}
+                </button>
+            </div>
+        </main>
+
+        <div v-else class="checkout">
+            <h2>Checkout</h2>
+            <div class="cart-item" v-for="item in cart" :key="item.id">
+                <h3>{{ item.title }} ({{ item.quantity }})</h3>
+                <button @click="removeFromCart(item)"><i class="fas fa-trash"></i> Remove</button>
+            </div>
+            <p>Total Items: {{ totalItemsInCart }}</p>
+            <p>Total Price: ${{ totalPrice }}</p>
+            <button @click="checkout">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                sitename: 'After School App',
+                showCheckout: false,
+                cart: [],
+                searchQuery: '',
+                lessons: [
+                    {
+                        id: 1,
+                        title: "Math Tutoring",
+                        description: "Learn the fundamentals of math.",
+                        price: 50,
+                        available: 10,
+                        image: "images/math.jpg",
+                        alt: "Math Tutoring",
+                        icon: "fas fa-calculator"
+                    },
+                    {
+                        id: 2,
+                        title: "Science Club",
+                        description: "Explore the wonders of science.",
+                        price: 60,
+                        available: 8,
+                        image: "images/science.jpg",
+                        alt: "Science Club",
+                        icon: "fas fa-flask"
+                    },
+                    {
+                        id: 3,
+                        title: "Art Class",
+                        description: "Unleash your creativity with art.",
+                        price: 40,
+                        available: 5,
+                        image: "images/art.jpg",
+                        alt: "Art Class",
+                        icon: "fas fa-paint-brush"
+                    }
+                    // Add more lessons as needed
+                ]
+            },
+            computed: {
+                filteredLessons() {
+                    return this.lessons.filter(lesson => {
+                        return lesson.title.toLowerCase().includes(this.searchQuery.toLowerCase());
+                    });
+                },
+                totalItemsInCart() {
+                    return this.cart.reduce((total, item) => total + item.quantity, 0);
+                },
+                totalPrice() {
+                    return this.cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+                }
+            },
+            methods: {
+                addToCart(lesson) {
+                    const found = this.cart.find(item => item.id === lesson.id);
+                    if (found) {
+                        found.quantity++;
+                    } else {
+                        this.cart.push({ ...lesson, quantity: 1 });
+                    }
+                    lesson.available--;
+                },
+                removeFromCart(item) {
+                    const found = this.cart.find(cartItem => cartItem.id === item.id);
+                    if (found) {
+                        found.quantity--;
+                        if (found.quantity === 0) {
+                            this.cart.splice(this.cart.indexOf(found), 1);
+                        }
+                        const lesson = this.lessons.find(lesson => lesson.id === item.id);
+                        lesson.available++;
+                    }
+                },
+                viewCheckout() {
+                    this.showCheckout = !this.showCheckout;
+                },
+                sortLessons(attribute) {
+                    this.lessons.sort((a, b) => {
+                        if (this.sortBy === 'price') {
+                            return a.price - b.price;
+                        } else if (this.sortBy === 'title') {
+                            return a.title.localeCompare(b.title);
+                        } else if (this.sortBy === 'available') {
+                            return a.available - b.available;
+                        }
+                    });
+                },
+                checkout() {
+                    alert("Thank you for your order!");
+                    this.cart = []; // Reset cart after checkout
+                    this.lessons.forEach(lesson => lesson.available += 1); // Reset availability
+                }
+            }
+        });
+    </script>
+</body>
+</html>
