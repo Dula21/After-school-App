@@ -34,31 +34,33 @@
                 </div>
             </div>
             <div v-if="showLessons">
-                <div v-for="lesson in filteredLessons" :key="lesson.id" class="lesson-card">
-                    <figure>
-                        <img v-bind:src="lesson.image" :alt="lesson.alt">
-                    </figure>
-                    <h2>{{ lesson.title }}</h2>
-                    <p>{{ lesson.description }}</p>
-                    <p>Location: {{ lesson.location }}</p>
-                    <p>Price: ${{ lesson.price }}</p>
-                    <p>Available: {{ lesson.availableInventory }}</p>
-                   
-                    <div>
-                        <span v-for="n in Math.min(lesson.rating, 5)" :key="'filled-' + n">★</span>
-                        <span v-for="n in Math.max(0, 5 - lesson.rating)" :key="'empty-' + n">☆</span>
-                    </div>
-                    
-                    <button v-on:click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">
-                        {{ canAddToCart(lesson) ? "Add to Cart" : "Out of Stock" }}
-                    </button>
-                    <span v-if="lesson.availableInventory === cartCount(lesson.id)">All out!</span>
-                    <span v-else>Buy Now!</span>
-                    <span v-else-if="lesson.availableInventory - cartCount(lesson.id) < 5">
-                        Only {{ lesson.availableInventory - cartCount(lesson.id) }} left!
-                    </span>
-                </div>
-            </div>
+              <div class="lesson-gallery"> <!-- Added gallery container -->
+                  <div v-for="lesson in filteredLessons" :key="lesson.id" class="lesson-card">
+                      <figure>
+                          <img v-bind:src="lesson.image" :alt="lesson.alt">
+                      </figure>
+                      <h2>{{ lesson.title }}</h2>
+                      <p>{{ lesson.description }}</p>
+                      <p>Location: {{ lesson.location }}</p>
+                      <p>Price: ${{ lesson.price }}</p>
+                      <p>Available: {{ lesson.availableInventory }}</p>
+                      
+                      <div>
+                          <span v-for="n in Math.min(lesson.rating, 5)" :key="'filled-' + n">★</span>
+                          <span v-for="n in Math.max(0, 5 - lesson.rating)" :key="'empty-' + n">☆</span>
+                      </div>
+                      
+                      <button v-on:click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">
+                          {{ canAddToCart(lesson) ? "Add to Cart" : "Out of Stock" }}
+                      </button>
+                      <span v-if="lesson.availableInventory === cartCount(lesson.id)">All out!</span>
+                      <span v-else>Buy Now!</span>
+                      <span v-else-if="lesson.availableInventory - cartCount(lesson.id) < 5">
+                          Only {{ lesson.availableInventory - cartCount(lesson.id) }} left!
+                      </span>
+                  </div>
+              </div>
+          </div>
 
             <div v-else>
                 <div class="checkout-form">
