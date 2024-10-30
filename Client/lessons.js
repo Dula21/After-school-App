@@ -31,6 +31,28 @@ const lessons = [
         alt: "Physics",
         location: "Auditorium" ,// New location property
         rating: 5 // New rating property
-    }
+    },
+    {
+    id: 4,
+        title: "Arabic",
+        description: "Enhance your french skills!",
+        price: 100,
+        availableInventory: 5,
+        image: "Images/arabic.png",
+        alt: "arabic Lesson",
+        location: "Room 101" ,// New location property
+        rating: 4 // New rating property
     // Add more lessons as needed
+    },
+    {
+        id: 5,
+        title: "French",
+        description: "Enhance your french skills!",
+        price: 100,
+        availableInventory: 5,
+        image: "Images/french.png",
+        alt: "french Lesson",
+        location: "Room 101" ,// New location property
+        rating: 3 // New rating property
+    }
 ];
