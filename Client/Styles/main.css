@@ -137,16 +137,26 @@ main {
     margin: 20px auto; /* Center the order summary */
     max-width: 500px; /* Set a maximum width for the order summary */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-align: center; /* Center text inside the box */
 }
 
 .order-summary h3 {
     margin-top: 0; /* Remove top margin for better alignment */
     color: #333; /* Darker color for better readability */
-    text-align: center; /* Centered heading */
 }
 
 .order-summary p {
     margin: 5px 0; /* Consistent margin for paragraphs */
+}
+
+.order-summary ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+    margin: 10px 0; /* Add margin for spacing */
+}
+
+.order-summary li {
+    text-align: left; /* Align list items to the left */
 }
 
 ul {
