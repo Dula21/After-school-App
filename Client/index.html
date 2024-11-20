@@ -23,107 +23,110 @@
             <div class="controls-container">
                 <div class="search-container">
                     <label for="search">Search Lessons:</label>
-                    <input type="text" id="search" v-model="searchQuery" placeholder="Search by title or description" />
+                    <input type="text" id="search" v-model="searchQuery" placeholder="Search by title or description or location" />
                 </div>
                 <div class="sorting-container">
                     <label for="sort">Sort by:</label>
                     <select v-model="sortOption" @change="setSortOption(sortOption)">
-                        <option value="title">Title (A-Z)</option>
+                        <option value="title">Name (A-Z)</option>
+                        <option value="title_desc">Name (Z-A)</option>
                         <option value="price">Price (Low to High)</option>
+                        <option value="price_desc">Price (High to Low)</option>
+                        <option value="location">Location</option>
+                        <option value="availability">Availability</option>
                     </select>
                 </div>
             </div>
             <div v-if="showLessons">
-              <div class="lesson-gallery"> <!-- Added gallery container -->
-                  <div v-for="lesson in filteredLessons" :key="lesson.id" class="lesson-card">
-                      <figure>
-                          <img v-bind:src="lesson.image" :alt="lesson.alt">
-                      </figure>
-                      <h2>{{ lesson.title }}</h2>
-                      <p>{{ lesson.description }}</p>
-                      <p>Location: {{ lesson.location }}</p>
-                      <p>Price: ${{ lesson.price }}</p>
-                      <p>Available: {{ lesson.availableInventory }}</p>
-                      
-                      <div>
-                          <span v-for="n in Math.min(lesson.rating, 5)" :key="'filled-' + n">★</span>
-                          <span v-for="n in Math.max(0, 5 - lesson.rating)" :key="'empty-' + n">☆</span>
-                      </div>
-                      
-                      <button v-on:click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">
-                          {{ canAddToCart(lesson) ? "Add to Cart" : "Out of Stock" }}
-                      </button>
-                      <span v-if="lesson.availableInventory === cartCount(lesson.id)">All out!</span>
-                      <span v-else>Buy Now!</span>
-                      <span v-else-if="lesson.availableInventory - cartCount(lesson.id) < 5">
-                          Only {{ lesson.availableInventory - cartCount(lesson.id) }} left!
-                      </span>
-                  </div>
-              </div>
-          </div>
+                <div class="lesson-gallery">
+                    <div v-for="lesson in filteredLessons" :key="lesson.id" class="lesson-card">
+                        <figure>
+                            <img v-bind:src="lesson.image" :alt="lesson.alt">
+                        </figure>
+                        <h2>{{ lesson.title }}</h2>
+                        <p>{{ lesson.description }}</p>
+                        <p>Location: {{ lesson.location }}</p>
+                        <p>Price: ${{ lesson.price }}</p>
+                        <p>Available: {{ lesson.availableInventory }}</p>
+                        
+                        <div>
+                            <span v-for="n in Math.min(lesson.rating, 5)" :key="'filled-' + n">★</span>
+                            <span v-for="n in Math.max(0, 5 - lesson.rating)" :key="'empty-' + n">☆</span>
+                        </div>
+                        
+                        <button v-on:click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">
+                            {{ canAddToCart(lesson) ? "Add to Cart" : "Out of Stock !" }}
+                        </button>
+                        <span v-if="lesson.availableInventory === cartCount(lesson.id)">All out!</span>
+                        <span v-else>Buy Now!</span>
+                        <span v-else-if="lesson.availableInventory - cartCount(lesson.id) < 5">
+                            Only {{ lesson.availableInventory - cartCount(lesson.id) }} left!
+                        </span>
+                    </div>
+                </div>
+            </div>
 
             <div v-else>
                 <div class="checkout-form">
-                  <h2>Checkout</h2>
-                  <p>
-                    <strong>First Name:</strong>
-                    <input v-model.trim="order.firstName" required />
-                  </p>
-                  <p>
-                    <strong>Last Name:</strong>
-                    <input v-model.trim="order.lastName" required />
-                  </p>
-                  <p>
-                    <strong>Address:</strong>
-                    <input v-model.trim="order.address" required />
-                  </p>
-                  <p>
-                    <strong>City:</strong>
-                    <input v-model.trim="order.city" required />
-                  </p>
-                  <p>
-                    <strong>Zip Code:</strong>
-                    <input v-model.trim="order.zip" required />
-                  </p>
-                  <p>
-                    <strong>State:</strong>
-                    <select v-model="order.state" required>
-                      <option disabled value="">Select a state</option>
-                      <option v-for="state in states" :key="state" :value="state">{{ state }}</option>
-                    </select>
-                  </p>
-                  <p>
-                    <strong>Type:</strong>
-                    <div>
-                        <p>
-                      <input type="radio" id="student" value="Student" v-model="order.type" required />
-                      <label for="student">Student</label>
+                    <h2>Checkout</h2>
+                    <p>
+                        <strong>First Name:</strong>
+                        <input v-model.trim="order.firstName" required />
                     </p>
                     <p>
-                      <input type="radio" id="business" value="Business" v-model="order.type" required />
-                      <label for="business">Business</label>
+                        <strong>Last Name:</strong>
+                        <input v-model.trim="order.lastName" required />
+                    </p>
+                    <p>
+                        <strong>Address:</strong>
+                        <input v-model.trim="order.address" required />
+                    </p>
+                    <p>
+                        <strong>City:</strong>
+                        <input v-model.trim="order.city" required />
+                    </p>
+                    <p>
+                        <strong>Zip Code:</strong>
+                        <input v-model.trim="order.zip" required />
+                    </p>
+                    
+                      <p>
+                          <strong>State:</strong>
+                          <select v-model="order.state" required>
+                              <option disabled value="">Select a state</option>
+                              <option v-for="state in states" :key="state" :value="state">{{ state }}</option>
+                          </select>
                       </p>
-                    </div>
-                  </p>
-                  <button v-on:click="submitOrder">Place Order</button>
+                      <p>
+                          <strong>Type:</strong>
+                      </p>
+                      <div style="display: flex; gap: 10px; align-items: center;">
+                          <input type="radio" id="student" value="Student" v-model="order.type" required />
+                          <label for="student">Student</label>
+                          <input type="radio" id="business" value="Business" v-model="order.type" required />
+                          <label for="business">Business</label>
+                      </div>
+                  
+                  
+                    <button v-on:click="submitOrder">Place Order</button>
                 </div>
             
-                <div v-if="order.firstName && order.lastName && order.address && order.city && order.zip && order.state && order.type">
-                  <h3>Order Summary</h3>
-                  <p><strong>Name:</strong> {{ order.firstName }} {{ order.lastName }}</p>
-                  <p><strong>Address:</strong> {{ order.address }}</p>
-                  <p><strong>City:</strong> {{ order.city }}</p>
-                  <p><strong>Zip Code:</strong> {{ order.zip }}</p>
-                  <p><strong>State:</strong> {{ order.state }}</p>
-                  <p><strong>Type:</strong> {{ order.type }}</p>
-                  <p><strong>Lessons in Cart:</strong></p>
-                  <ul>
-                    <li v-for="item in cart" :key="item.id">
-                      {{ item.title }} - Quantity: {{ item.quantity }}
-                    </li>
-                  </ul>
+                <div v-if="order.firstName && order.lastName && order.address && order.city && order.zip && order.state && order.type" class="order-summary">
+                    <h3>Order Summary</h3>
+                    <p><strong>Name:</strong> {{ order.firstName }} {{ order.lastName }}</p>
+                    <p><strong>Address:</strong> {{ order.address }}</p>
+                    <p><strong>City:</strong> {{ order.city }}</p>
+                    <p><strong>Zip Code:</strong> {{ order.zip }}</p>
+                    <p><strong>State:</strong> {{ order.state }}</p>
+                    <p><strong>Type:</strong> {{ order.type }}</p>
+                    <p><strong>Lessons in Cart:</strong></p>
+                    <ul>
+                        <li v-for="item in cart" :key="item.id">
+                            {{ item.title }} - Quantity: {{ item.quantity }}
+                        </li>
+                    </ul>
                 </div>
-              </div>
+            </div>
         </main>
     </div>
 
