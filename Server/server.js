@@ -1,23 +1,21 @@
-// server.js
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const path = require("path");
+
 const app = express();
-const PORT = 3000;
+const PORT = 8080; // You can customize the port if needed
 
-// Sample data (in place of a real database)
-let lessons = [
-    { id: 1, title: "Math Tutoring", description: "Enhance your math skills!", price: 100, availableInventory: 5 },
-    { id: 2, title: "Science Workshop", description: "Hands-on science experience.", price: 150, availableInventory: 3 }
-];
+// Define the path to your static files (adjusted for the "Client" folder)
+const clientPath = path.join(__dirname, "Client");
 
-app.use(cors());
-app.use(express.json());
+// Serve static files from the "Client" folder
+app.use(express.static(clientPath));
 
-// Routes
-app.get('/api/lessons', (req, res) => {
-    res.json(lessons);
+// Handle SPA routing (for Vue.js, React, etc., with client-side routing)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(clientPath, "index.html"));
 });
 
-// For updating or submitting orders, you would add more endpoints here.
-
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+// Start the frontend server
+app.listen(PORT, () => {
+  console.log(`Frontend server is running at http://localhost:${PORT}`);
+});
