@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Lessons</title>
+</head>
+<body>
+    <h1>Available Lessons</h1>
+    <ul id="lesson-list"></ul>
+
+    <script>
+        fetch('http://localhost:3000/collection/lessons')
+            .then(response => response.json())
+            .then(lessons => {
+                const lessonList = document.getElementById('lesson-list');
+                lessons.forEach(lesson => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `${lesson.title} - $${lesson.price}`;
+                    lessonList.appendChild(li);
+                });
+            })
+            .catch((error) => {
+                console.error('Error fetching lessons:', error);
+            });
+    </script>
+</body>
+</html>

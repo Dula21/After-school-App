@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+</head>
+<body>
+    <h1>Add a New Product</h1>
+    <p>Adding the following product to the backend:</p>
+    <code>{ title: 'new product', price: 49 }</code>
+    <p>Response: <span id="response"></span></p>
+    <p>Error: <span id="error"></span></p>
+
+    <script>
+        const newProduct = { title: 'new product', price: 49 };
+
+        // Fetch POST request to add the product
+        fetch('http://localhost:3000/collection/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newProduct),
+        })
+        .then(response => response.json())
+        .then(responseJSON => {
+            document.getElementById('response').innerText = JSON.stringify(responseJSON);
+        })
+        .catch((error) => {
+            document.getElementById('error').innerText = error;
+        });
+    </script>
+</body>
+</html>
