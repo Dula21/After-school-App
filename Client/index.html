@@ -16,7 +16,21 @@
             <button v-on:click="toggleCheckout">
                 {{ cartItemCount }}
                 <span class="fas fa-cart-plus"> Checkout</span>
+
             </button>
+            <script>
+                // Fetch data from the backend server (http://localhost:3000)
+                fetch('http://localhost:3000')
+                    .then(function(response) {
+                        return response.text();  // Convert the response to text
+                    })
+                    .then(function(text) {
+                        alert(text);  // Display the text in an alert
+                    })
+                    .catch(function(error) {
+                        console.error('Error fetching data:', error);
+                    });
+            </script>
         </header>
 
         <main>
