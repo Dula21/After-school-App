@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 
 const app = express();
-const PORT = 3000; // You can customize the port if needed
+const PORT = 3001; // You can customize the port if needed
 
 // Define the path to your static files (adjusted for the "Client" folder)
 const clientPath = path.join(__dirname, "Client");
