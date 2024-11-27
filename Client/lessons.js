@@ -85,7 +85,7 @@ const lessons = [
         description: "Aware About old Generation!",
         price: 600,
         availableInventory: 5,
-        image: "Images/history.png",
+        image: "Images/History.png",
         alt: "History Lesson",
         location: "California" ,// New location property
         rating: 3 // New rating property
